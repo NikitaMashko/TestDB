@@ -40,7 +40,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	db, err := sql.Open("postgres", "nikita:gtasa2012@/productdb")
+	db, err := sql.Open("postgres", "nikita:12345@/productdb")
 
 	if err != nil {
 		log.Println(err)
