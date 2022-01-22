@@ -1,18 +1,23 @@
 package main
+
 import (
 	"database/sql"
 	"fmt"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/lib/pq"
 	"html/template"
 	"log"
 	"net/http"
 )
+
 type Product struct{
 	Id int
 	Model string
 	Company string
 	Price int
 }
+
 var database *sql.DB
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -39,8 +44,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-
-	db, err := sql.Open("postgres", "nikita:12345@/productdb")
+	db, err := sql.Open("postgres", "nikita:0000@/productdb")
 
 	if err != nil {
 		log.Println(err)
@@ -48,7 +52,9 @@ func main() {
 	database = db
 	defer db.Close()
 	http.HandleFunc("/", IndexHandler)
-
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Get("/", IndexHandler)
 	fmt.Println("Server is listening...")
-	http.ListenAndServe(":8181", nil)
+	http.ListenAndServe(":3000", r)
 }
