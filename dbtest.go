@@ -21,10 +21,10 @@ const (
 )
 
 type Product struct {
-	Id int
-	Model string
+	Id      int
+	Model   string
 	Company string
-	Price int
+	Price   int
 }
 
 var database *sql.DB
@@ -33,7 +33,6 @@ type Handler func(w http.ResponseWriter, r *http.Request) error
 
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err := h(w, r); err != nil {
-		// handle returned error here.
 		w.WriteHeader(503)
 		w.Write([]byte("bad"))
 	}
@@ -63,10 +62,10 @@ func customHandler(w http.ResponseWriter, r *http.Request) error {
 	defer rows.Close()
 	products := []Product{}
 
-	for rows.Next(){
+	for rows.Next() {
 		p := Product{}
 		err := rows.Scan(&p.Id, &p.Model, &p.Company, &p.Price)
-		if err != nil{
+		if err != nil {
 			fmt.Println(err)
 			continue
 		}
